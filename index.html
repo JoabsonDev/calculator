@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./img/favicon.png" />
+
+    <!-- local styles -->
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- local scripts -->
+    <script src="./js/script.js" defer></script>
+  </head>
+  <body class="grid place-items-center min-h-screen bg-[#393946]">
+    <main
+      class="grid grid-cols-4 grid-rows-[37.5px_50px_repeat(5,_37.5px)] auto-rows-[37.5px] p-6 gap-[18px] max-w-[302px] w-full"
+    >
+      <!-- TODO: ficou pendente o blink -->
+      <input
+        id="display"
+        type="tel"
+        class="col-start-1 col-end-5 bg-[#8ba77b] border-none mb-6 max-h-[37px] h-full rounded px-2 text-right font-ds-digital text-[40px] select-none placeholder:text-inherit"
+        placeholder="0"
+        readonly
+      />
+
+      <button
+        class="bg-[#036f86] shadow-default border-none bg-[linear-gradient(0deg,_#036f86_0%,_#418c97_100%)] text-white aspect-square rounded-full select-none flex flex-col items-center justify-center leading-[normal] active:bg-[linear-gradient(0deg,_#036f86_0%,_#036f86_100%)] active:shadow-active active:scale-95 min-h-[49px] text-[14px] pointer-events-none-children"
+        data-action="on-ce"
+      >
+        <span class="border-b border-white">ON</span>
+        <span>CE</span>
+      </button>
+      <div
+        class="flex flex-col items-center justify-between text-white min-h-[49px] h-full"
+      >
+        <span class="leading-[normal]">MRC</span>
+        <button
+          data-action="mrc"
+          class="bg-[#f0e293] shadow-default rounded-[10px] leading-[normal] border-none bg-[linear-gradient(0deg,_#f0e293_0%,_#f8f1b8_100%)] aspect-[18/7] w-full select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#f0e293_0%,_#f0e293_100%)] active:shadow-active active:scale-95 pointer-events-none-children"
+        ></button>
+      </div>
+      <div
+        class="flex flex-col items-center justify-between text-white min-h-[49px] h-full"
+      >
+        <span class="leading-[normal]">M-</span>
+        <button
+          data-action="m-minus"
+          class="bg-[#f0e293] shadow-default rounded-[10px] leading-[normal] border-none bg-[linear-gradient(0deg,_#f0e293_0%,_#f8f1b8_100%)] aspect-[18/7] w-full select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#f0e293_0%,_#f0e293_100%)] active:shadow-active active:scale-95 pointer-events-none-children"
+        ></button>
+      </div>
+      <div
+        class="flex flex-col items-center justify-between text-white min-h-[49px] h-full"
+      >
+        <span class="leading-[normal]">M+</span>
+        <button
+          data-action="m-plus"
+          class="bg-[#f0e293] shadow-default rounded-[10px] leading-[normal] border-none bg-[linear-gradient(0deg,_#f0e293_0%,_#f8f1b8_100%)] aspect-[18/7] w-full select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#f0e293_0%,_#f0e293_100%)] active:shadow-active active:scale-95 pointer-events-none-children"
+        ></button>
+      </div>
+
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-[14px] pointer-events-none-children"
+        data-action="off"
+      >
+        OFF
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="√"
+      >
+        √
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="%"
+      >
+        %
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-[26px] pointer-events-none-children"
+        data-action="/"
+      >
+        ÷
+      </button>
+
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="7"
+      >
+        7
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="8"
+      >
+        8
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="9"
+      >
+        9
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-[14px] pointer-events-none-children"
+        data-action="*"
+      >
+        X
+      </button>
+
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="4"
+      >
+        4
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="5"
+      >
+        5
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="6"
+      >
+        6
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-[26px] pointer-events-none-children"
+        data-action="-"
+      >
+        -
+      </button>
+
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="1"
+      >
+        1
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="2"
+      >
+        2
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="3"
+      >
+        3
+      </button>
+      <button
+        class="bg-[#036f86] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#036f86_0%,_#418c97_100%)] text-white text-[22px] select-none flex flex-col items-center justify-center col-start-4 row-start-6 row-end-8 active:bg-[linear-gradient(0deg,_#036f86_0%,_#036f86_100%)] active:shadow-active active:scale-95 pointer-events-none-children"
+        data-action="+"
+      >
+        +
+      </button>
+
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="0"
+      >
+        0
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="."
+      >
+        •
+      </button>
+      <button
+        class="bg-[#383b45] shadow-default leading-[normal] rounded-lg border-none bg-[linear-gradient(0deg,_#383b45_0%,_#5d606d_100%)] text-white aspect-[4/3] select-none flex flex-col items-center justify-center active:bg-[linear-gradient(0deg,_#383b45_0%,_#383b45_100%)] active:shadow-active active:scale-95 text-base pointer-events-none-children"
+        data-action="="
+      >
+        =
+      </button>
+    </main>
+  </body>
+</html>
