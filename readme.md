@@ -78,3 +78,7 @@ cd calculator
 - **HTML**: Estrutura básica da calculadora.
 - **CSS**: Estilo e design, usando Tailwind CSS.
 - **JavaScript**: Lógica da calculadora.
+
+## Link do GitHub Pages
+
+[GitHub Pages](https://joabsondev.github.io/calculator/).
