@@ -15,6 +15,19 @@ module.exports = {
       },
       pointerEvents: {
         "none-children": "none"
+      },
+      animation: {
+        blink: "blink 500ms"
+      },
+      keyframes: {
+        blink: {
+          "0%": {
+            color: "#8ba77b"
+          },
+          "100%": {
+            color: "initial"
+          }
+        }
       }
     }
   },

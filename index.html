@@ -18,14 +18,16 @@
     <main
       class="grid grid-cols-4 grid-rows-[37.5px_50px_repeat(5,_37.5px)] auto-rows-[37.5px] p-6 gap-[18px] max-w-[302px] w-full"
     >
-      <!-- TODO: ficou pendente o blink -->
-      <input
-        id="display"
-        type="tel"
-        class="col-start-1 col-end-5 bg-[#8ba77b] border-none mb-6 max-h-[37px] h-full rounded px-2 text-right font-ds-digital text-[40px] select-none placeholder:text-inherit"
-        placeholder="0"
-        readonly
-      />
+      <div class="relative col-start-1 col-end-5 max-h-[37px] h-full mb-6">
+        <input
+          id="display"
+          type="tel"
+          class="h-full w-full bg-[#8ba77b] border-none rounded px-2 text-right font-ds-digital text-[40px] select-none placeholder:text-inherit"
+          placeholder="0"
+          readonly
+        />
+        <span id="m" class="absolute left-1 text-sm font-bold hidden">M</span>
+      </div>
 
       <button
         class="bg-[#036f86] shadow-default border-none bg-[linear-gradient(0deg,_#036f86_0%,_#418c97_100%)] text-white aspect-square rounded-full select-none flex flex-col items-center justify-center leading-[normal] active:bg-[linear-gradient(0deg,_#036f86_0%,_#036f86_100%)] active:shadow-active active:scale-95 min-h-[49px] text-[14px] pointer-events-none-children"
