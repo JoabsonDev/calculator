@@ -27,6 +27,11 @@ class Calculator {
     this.display.addEventListener("animationend", () =>
       this.display.classList.remove("animate-blink")
     )
+
+    // Adiciona o listener para eventos de teclado
+    document.addEventListener("keydown", (event) => {
+      this.handleKeyboard(event)
+    })
   }
 
   handleNumber(number) {
@@ -123,26 +128,16 @@ class Calculator {
   }
 
   memoryAdd() {
-    // Atualiza a memória somando o valor exibido
     this.memory += parseFloat(this.display.value)
     this.resetDisplay = true
-
-    // Atualiza o display com o novo valor da memória
     this.display.value = this.memory
-
-    // Exibe o indicador de memória
     document.getElementById("m").classList.remove("hidden")
   }
 
   memorySubtract() {
-    // Atualiza a memória subtraindo o valor exibido
     this.memory -= parseFloat(this.display.value)
     this.resetDisplay = true
-
-    // Atualiza o display com o novo valor da memória
     this.display.value = this.memory
-
-    // Exibe o indicador de memória
     document.getElementById("m").classList.remove("hidden")
   }
 
@@ -191,6 +186,68 @@ class Calculator {
 
   addBlinkAnimation() {
     this.display.classList.add("animate-blink")
+  }
+
+  handleKeyboard(event) {
+    const key = event.key
+    const keyCode = event.keyCode
+
+    // Mapear as teclas para ações
+    switch (key) {
+      case "0":
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+        this.handleNumber(key)
+        break
+      case ".":
+        this.handleDecimal()
+        break
+      case "+":
+        this.handleAction("+")
+        break
+      case "-":
+        this.handleAction("-")
+        break
+      case "*":
+        this.handleAction("*")
+        break
+      case "/":
+        this.handleAction("/")
+        break
+      case "Enter":
+        this.handleAction("=")
+        break
+      case "Escape":
+        this.handleAction("on-ce")
+        break
+      case "m":
+        if (event.ctrlKey) {
+          // Ctrl + M
+          this.handleAction("mrc")
+        }
+        break
+      case "M":
+        if (event.shiftKey) {
+          // Shift + M
+          this.handleAction("m-plus")
+        }
+        break
+      case "N":
+        if (event.shiftKey) {
+          // Shift + N
+          this.handleAction("m-minus")
+        }
+        break
+    }
+
+    this.addBlinkAnimation()
   }
 }
 
