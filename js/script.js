@@ -159,6 +159,7 @@ class Calculator {
     this.display.value = ""
     this.display.placeholder = ""
     this.toggleButtons(true)
+    document.getElementById("m").classList.add("hidden")
   }
 
   memoryRecallClear() {
