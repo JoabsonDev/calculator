@@ -9,29 +9,72 @@ class Calculator {
   }
 
   initialize() {
+    this.attachButtonEvents()
+    this.attachKeyboardEvents()
+  }
+
+  attachButtonEvents() {
     document.querySelectorAll("[data-action]").forEach((button) => {
       button.addEventListener("click", () => {
         const action = button.getAttribute("data-action")
-
-        if (isFinite(action)) {
-          this.handleNumber(action)
-        } else if (action === ".") {
-          this.handleDecimal()
-        } else {
-          this.handleAction(action)
-        }
+        this.processAction(action)
         this.addBlinkAnimation()
       })
     })
-
     this.display.addEventListener("animationend", () =>
       this.display.classList.remove("animate-blink")
     )
+  }
 
-    // Adiciona o listener para eventos de teclado
+  attachKeyboardEvents() {
     document.addEventListener("keydown", (event) => {
-      this.handleKeyboard(event)
+      this.processKeyboard(event)
+      this.addBlinkAnimation()
     })
+  }
+
+  processAction(action) {
+    if (isFinite(action)) {
+      this.handleNumber(action)
+    } else if (action === ".") {
+      this.handleDecimal()
+    } else {
+      this.handleOperation(action)
+    }
+  }
+
+  processKeyboard(event) {
+    const keyActions = {
+      0: () => this.handleNumber("0"),
+      1: () => this.handleNumber("1"),
+      2: () => this.handleNumber("2"),
+      3: () => this.handleNumber("3"),
+      4: () => this.handleNumber("4"),
+      5: () => this.handleNumber("5"),
+      6: () => this.handleNumber("6"),
+      7: () => this.handleNumber("7"),
+      8: () => this.handleNumber("8"),
+      9: () => this.handleNumber("9"),
+      ".": () => this.handleDecimal(),
+      "+": () => this.handleOperation("+"),
+      "-": () => this.handleOperation("-"),
+      "*": () => this.handleOperation("*"),
+      "/": () => this.handleOperation("/"),
+      Enter: () => this.handleOperation("="),
+      Escape: () => this.resetCalculator(),
+      m: () => {
+        if (event.ctrlKey) this.memoryRecallClear()
+      },
+      M: () => {
+        if (event.shiftKey) this.memoryAdd()
+      },
+      N: () => {
+        if (event.shiftKey) this.memorySubtract()
+      }
+    }
+
+    const action = keyActions[event.key]
+    if (action) action()
   }
 
   handleNumber(number) {
@@ -48,70 +91,74 @@ class Calculator {
     if (this.resetDisplay) {
       this.display.value = "0."
       this.resetDisplay = false
-    } else if (this.display.value === "" || this.display.value === "0") {
-      this.display.value = "0."
     } else if (!this.display.value.includes(".")) {
       this.display.value += "."
     }
     this.memoryRecall = false
   }
 
-  handleAction(action) {
-    switch (action) {
-      case "on-ce":
-        this.resetCalculator()
-        break
-      case "off":
-        this.turnOff()
-        break
-      case "mrc":
-        this.memoryRecallClear()
-        break
-      case "m-plus":
-        this.memoryAdd()
-        break
-      case "m-minus":
-        this.memorySubtract()
-        break
-      case "√":
-        this.squareRoot()
-        break
-      case "%":
-        this.percentage()
-        break
-      case "/":
-      case "*":
-      case "-":
-      case "+":
-        this.handleOperation(action)
-        break
-      case "=":
-        this.calculate()
-        break
+  handleOperation(action) {
+    const operations = {
+      "on-ce": () => this.resetCalculator(),
+      off: () => this.turnOff(),
+      mrc: () => this.memoryRecallClear(),
+      "m-plus": () => this.memoryAdd(),
+      "m-minus": () => this.memorySubtract(),
+      "√": () =>
+        (this.display.value = Math.sqrt(parseFloat(this.display.value))),
+      "%": () => (this.display.value = parseFloat(this.display.value) / 100),
+      "=": () => this.calculate()
     }
+
+    if (["/", "*", "-", "+"].includes(action)) {
+      this.handleMathOperation(action)
+    } else {
+      const operation = operations[action]
+      if (operation) operation()
+    }
+  }
+
+  handleMathOperation(operation) {
+    if (this.currentOperation && !this.resetDisplay) {
+      this.calculate()
+    }
+    this.currentOperation = operation
+    this.memory = parseFloat(this.display.value)
+    this.resetDisplay = true
+  }
+
+  calculate() {
+    if (!this.currentOperation) return
+
+    const operations = {
+      "/": (a, b) => a / b,
+      "*": (a, b) => a * b,
+      "-": (a, b) => a - b,
+      "+": (a, b) => a + b
+    }
+
+    const result = operations[this.currentOperation](
+      this.memory,
+      parseFloat(this.display.value)
+    )
+    this.display.value = result
+    this.currentOperation = null
+    this.resetDisplay = true
   }
 
   resetCalculator() {
     this.display.value = "0"
     this.memory = 0
     this.currentOperation = null
-
     this.display.placeholder = "0"
-    document.querySelectorAll("button").forEach((button) => {
-      button.disabled = false
-    })
+    this.toggleButtons(false)
     document.getElementById("m").classList.add("hidden")
   }
 
   turnOff() {
     this.display.value = ""
     this.display.placeholder = ""
-
-    document.querySelectorAll("button").forEach((button) => {
-      if (button.getAttribute("data-action") !== "on-ce") {
-        button.disabled = true
-      }
-    })
+    this.toggleButtons(true)
   }
 
   memoryRecallClear() {
@@ -130,127 +177,32 @@ class Calculator {
   memoryAdd() {
     this.memory += parseFloat(this.display.value)
     this.resetDisplay = true
-    this.display.value = this.memory
-    document.getElementById("m").classList.remove("hidden")
+    this.updateMemoryIndicator()
   }
 
   memorySubtract() {
     this.memory -= parseFloat(this.display.value)
     this.resetDisplay = true
-    this.display.value = this.memory
+    this.updateMemoryIndicator()
+  }
+
+  updateMemoryIndicator() {
     document.getElementById("m").classList.remove("hidden")
   }
 
-  squareRoot() {
-    this.display.value = Math.sqrt(parseFloat(this.display.value))
-  }
-
-  percentage() {
-    this.display.value = parseFloat(this.display.value) / 100
-  }
-
-  handleOperation(operation) {
-    if (this.currentOperation !== null && !this.resetDisplay) {
-      this.calculate()
-    }
-    this.currentOperation = operation
-    this.memory = parseFloat(this.display.value)
-    this.resetDisplay = true
-  }
-
-  calculate() {
-    if (this.currentOperation === null) return
-
-    const currentValue = parseFloat(this.display.value)
-    let result
-
-    switch (this.currentOperation) {
-      case "/":
-        result = this.memory / currentValue
-        break
-      case "*":
-        result = this.memory * currentValue
-        break
-      case "-":
-        result = this.memory - currentValue
-        break
-      case "+":
-        result = this.memory + currentValue
-        break
-    }
-
-    this.display.value = result
-    this.currentOperation = null
-    this.resetDisplay = true
+  toggleButtons(disable) {
+    document.querySelectorAll("button").forEach((button) => {
+      if (button.getAttribute("data-action") !== "on-ce") {
+        button.disabled = disable
+      }
+    })
   }
 
   addBlinkAnimation() {
     this.display.classList.add("animate-blink")
   }
-
-  handleKeyboard(event) {
-    const key = event.key
-    const keyCode = event.keyCode
-
-    // Mapear as teclas para ações
-    switch (key) {
-      case "0":
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-      case "5":
-      case "6":
-      case "7":
-      case "8":
-      case "9":
-        this.handleNumber(key)
-        break
-      case ".":
-        this.handleDecimal()
-        break
-      case "+":
-        this.handleAction("+")
-        break
-      case "-":
-        this.handleAction("-")
-        break
-      case "*":
-        this.handleAction("*")
-        break
-      case "/":
-        this.handleAction("/")
-        break
-      case "Enter":
-        this.handleAction("=")
-        break
-      case "Escape":
-        this.handleAction("on-ce")
-        break
-      case "m":
-        if (event.ctrlKey) {
-          // Ctrl + M
-          this.handleAction("mrc")
-        }
-        break
-      case "M":
-        if (event.shiftKey) {
-          // Shift + M
-          this.handleAction("m-plus")
-        }
-        break
-      case "N":
-        if (event.shiftKey) {
-          // Shift + N
-          this.handleAction("m-minus")
-        }
-        break
-    }
-
-    this.addBlinkAnimation()
-  }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   new Calculator()
 })
