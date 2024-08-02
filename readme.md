@@ -62,13 +62,13 @@ Você também pode usar o teclado para interagir com a calculadora:
 1. Clone este repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/calculadora-js.git
+git clone https://github.com/JoabsonDev/calculator.git
 ```
 
 2. Navegue até o diretório do projeto:
 
 ```bash
-cd calculadora-js
+cd calculator
 ```
 
 3. Abra o arquivo index.html em seu navegador.
